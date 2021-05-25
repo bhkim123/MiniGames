@@ -119,6 +119,88 @@ def random_pick():
     for b in able_buttons:
         if b["text"] == "empty":
             empty_bt.append(b)
+    for b in empty_bt:
+        if b == bt1:
+            if (bt2["text"] == "O" and bt3["text"] == "O") or (bt2["text"] == "X" and bt3["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt4["text"] == "O" and bt7["text"] == "O") or (bt4["text"] == "X" and bt7["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt5["text"] == "O" and bt9["text"] == "O") or (bt5["text"] == "X" and bt9["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt2:
+            if (bt1["text"] == "O" and bt3["text"] == "O") or (bt1["text"] == "X" and bt3["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt5["text"] == "O" and bt8["text"] == "O") or (bt5["text"] == "X" and bt8["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt3:
+            if (bt1["text"] == "O" and bt2["text"] == "O") or (bt1["text"] == "X" and bt2["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt5["text"] == "O" and bt7["text"] == "O") or (bt5["text"] == "X" and bt7["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt6["text"] == "O" and bt9["text"] == "O") or (bt6["text"] == "X" and bt9["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt4:
+            if (bt1["text"] == "O" and bt7["text"] == "O") or (bt1["text"] == "X" and bt7["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt5["text"] == "O" and bt6["text"] == "O") or (bt5["text"] == "X" and bt6["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt5:
+            if (bt1["text"] == "O" and bt9["text"] == "O") or (bt1["text"] == "X" and bt9["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt3["text"] == "O" and bt7["text"] == "O") or (bt3["text"] == "X" and bt7["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt6["text"] == "O" and bt4["text"] == "O") or (bt6["text"] == "X" and bt4["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt2["text"] == "O" and bt8["text"] == "O") or (bt2["text"] == "X" and bt8["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt6:
+            if (bt4["text"] == "O" and bt5["text"] == "O") or (bt4["text"] == "X" and bt5["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt3["text"] == "O" and bt9["text"] == "O") or (bt3["text"] == "X" and bt9["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt7:
+            if (bt4["text"] == "O" and bt1["text"] == "O") or (bt4["text"] == "X" and bt1["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt8["text"] == "O" and bt9["text"] == "O") or (bt8["text"] == "X" and bt9["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt5["text"] == "O" and bt3["text"] == "O") or (bt5["text"] == "X" and bt3["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt8:
+            if (bt2["text"] == "O" and bt5["text"] == "O") or (bt2["text"] == "X" and bt5["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt7["text"] == "O" and bt9["text"] == "O") or (bt7["text"] == "X" and bt9["text"] == "X"):
+                clicked(b)
+                return
+        elif b == bt9:
+            if (bt1["text"] == "O" and bt5["text"] == "O") or (bt1["text"] == "X" and bt5["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt3["text"] == "O" and bt6["text"] == "O") or (bt3["text"] == "X" and bt6["text"] == "X"):
+                clicked(b)
+                return
+            elif (bt7["text"] == "O" and bt8["text"] == "O") or (bt7["text"] == "X" and bt8["text"] == "X"):
+                clicked(b)
+                return
     num = random.randrange(0, len(empty_bt))
     clicked(empty_bt[num])
 
