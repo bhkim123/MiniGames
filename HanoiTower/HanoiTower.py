@@ -1,4 +1,6 @@
+import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 
 window = Tk()
 window.title("Tower of Hanoi")
@@ -35,13 +37,13 @@ y_3rd = 260
 y_bottom = 285
 
 img1 = PhotoImage(file='1.png')
-disc1 = bg_canvas.create_image(x_1st, 210, image=img1, tags=1)
+disc1 = bg_canvas.create_image(x_1st, y_top, image=img1, tags="1")
 img2 = PhotoImage(file='2.png')
-disc2 = bg_canvas.create_image(x_1st, 235, image=img2, tags=2)
+disc2 = bg_canvas.create_image(x_1st, y_2nd, image=img2, tags="2")
 img3 = PhotoImage(file='3.png')
-disc3 = bg_canvas.create_image(x_1st, 260, image=img3, tags=3)
+disc3 = bg_canvas.create_image(x_1st, y_3rd, image=img3, tags="3")
 img4 = PhotoImage(file='4.png')
-disc4 = bg_canvas.create_image(x_1st, 285, image=img4, tags=4)
+disc4 = bg_canvas.create_image(x_1st, y_bottom, image=img4, tags="4")
 
 b12 = Button(window, text="To 2nd", font=("Helvetica", 10), command=lambda: clicked(b12)).place(x=150, y=300, width=50, height=20)
 b13 = Button(window, text="To 3rd", font=("Helvetica", 10), command=lambda: clicked(b13)).place(x=210, y=300, width=50, height=20)
@@ -58,30 +60,172 @@ list_3rd = []
 
 
 def clicked(b):
-
+    global count, b12, b13, b21, b23, b31, b32, list_1st, list_2nd, list_3rd
     if (b == b12 or b == b13) and len(list_1st) > 0:
         top_d = list_1st[-1]
-        if b == b12 and len(list_2nd) > 0 and (list_2nd[-1])["tag"] > top_d["tag"]:
+        if b == b12 and ((len(list_2nd) > 0 and (list_2nd[-1])["tag"] > top_d["tag"]) or len(list_2nd) == 0):
             count += 1
             ct.config(text="count: " + str(count))
             list_2nd.append(top_d)
             list_1st.remove(top_d)
             move_disc()
-        elif b == b13 and len(list_3rd) > 0 and (list_3rd[-1])["tag"] > top_d["tag"]:
+        elif b == b13 and ((len(list_3rd) > 0 and (list_3rd[-1])["tag"] > top_d["tag"]) or len(list_3rd) == 0):
             count += 1
             ct.config(text="count: " + str(count))
             list_3rd.append(top_d)
             list_1st.remove(top_d)
             move_disc()
-    elif b == b21 or b == b23:
-        pass
-    else:
-        pass
+    elif b == b21 or b == b23 and len(list_2nd) > 0:
+        top_d = list_2nd[-1]
+        if b == b21 and ((len(list_1st) > 0 and (list_1st[-1])["tag"] > top_d["tag"]) or len(list_1st) == 0):
+            count += 1
+            ct.config(text="count: " + str(count))
+            list_1st.append(top_d)
+            list_2nd.remove(top_d)
+            move_disc()
+        elif b == b23 and ((len(list_3rd) > 0 and (list_3rd[-1])["tag"] > top_d["tag"]) or len(list_3rd) == 0):
+            count += 1
+            ct.config(text="count: " + str(count))
+            list_3rd.append(top_d)
+            list_2nd.remove(top_d)
+            move_disc()
+    elif b == b31 or b == b32 and len(list_3rd) > 0:
+        top_d = list_3rd[-1]
+        if b == b31 and ((len(list_1st) > 0 and (list_1st[-1])["tag"] > top_d["tag"]) or len(list_1st) == 0):
+            count += 1
+            ct.config(text="count: " + str(count))
+            list_1st.append(top_d)
+            list_3rd.remove(top_d)
+            move_disc()
+        elif b == b32 and ((len(list_2nd) > 0 and (list_2nd[-1])["tag"] > top_d["tag"]) or len(list_2nd) == 0):
+            count += 1
+            ct.config(text="count: " + str(count))
+            list_2nd.append(top_d)
+            list_3rd.remove(top_d)
+            move_disc()
+    check_win()
+
+def check_win():
+    global list_3rd, disc1, disc2, disc3, disc4
+    if list_3rd == [disc4, disc3, disc2, disc1]:
+        messagebox.showinfo("Well done")
+        make_disabled
+
+def make_disabled():
+    global b12, b13, b21, b23, b31, b32
+    li = [b12, b13, b21, b23, b31, b32]
+    for l in li:
+        l.config(state=tk.DISABLED)
+
 
 def move_disc():
-    pass
+    global list_1st, list_2nd, list_3rd, x_1st, x_2nd, x_3rd, y_top, y_2nd, y_3rd, y_bottom, img1, img2, img3, img4
+    li = [list_1st, list_2nd, list_3rd]
+    for l in li:
+        x_coor = 0
+        if l == list_1st:
+            x_coor = x_1st
+        elif l == list_2nd:
+            x_coor = x_2nd
+        else:
+            x_coor = x_3rd
+
+        if len(l) == 1:
+            if (l[0])["tags"] == "1":
+                l[0] = bg_canvas.create_image(x_coor, y_bottom, image=img1, tags=1)
+            elif (l[0])["tags"] == "2":
+                l[0] = bg_canvas.create_image(x_coor, y_bottom, image=img2, tags=2)
+            elif (l[0])["tags"] == "3":
+                l[0] = bg_canvas.create_image(x_coor, y_bottom, image=img3, tags=3)
+            elif (l[0])["tags"] == "4":
+                l[0] = bg_canvas.create_image(x_coor, y_bottom, image=img4, tags=4)
+
+        elif len(l) == 2:
+            if (l[0])["tags"] == "1":
+                l[0] = bg_canvas.create_image(x_coor, y_3rd, image=img1, tags=1)
+            elif (l[0])["tags"] == "2":
+                l[0] = bg_canvas.create_image(x_coor, y_3rd, image=img2, tags=2)
+            elif (l[0])["tags"] == "3":
+                l[0] = bg_canvas.create_image(x_coor, y_3rd, image=img3, tags=3)
+            elif (l[0])["tags"] == "4":
+                l[0] = bg_canvas.create_image(x_coor, y_3rd, image=img4, tags=4)
+
+            if (l[1])["tags"] == "1":
+                l[1] = bg_canvas.create_image(x_coor, y_bottom, image=img1, tags=1)
+            elif (l[1])["tags"] == "2":
+                l[1] = bg_canvas.create_image(x_coor, y_bottom, image=img2, tags=2)
+            elif (l[1])["tags"] == "3":
+                l[1] = bg_canvas.create_image(x_coor, y_bottom, image=img3, tags=3)
+            elif (l[1])["tags"] == "4":
+                l[1] = bg_canvas.create_image(x_coor, y_bottom, image=img4, tags=4)
+
+        elif len(l) == 3:
+            if (l[0])["tags"] == "1":
+                l[0] = bg_canvas.create_image(x_coor, y_2nd, image=img1, tags=1)
+            elif (l[0])["tags"] == "2":
+                l[0] = bg_canvas.create_image(x_coor, y_2nd, image=img2, tags=2)
+            elif (l[0])["tags"] == "3":
+                l[0] = bg_canvas.create_image(x_coor, y_2nd, image=img3, tags=3)
+            elif (l[0])["tags"] == "4":
+                l[0] = bg_canvas.create_image(x_coor, y_2nd, image=img4, tags=4)
+
+            if (l[1])["tags"] == "1":
+                l[1] = bg_canvas.create_image(x_coor, y_3rd, image=img1, tags=1)
+            elif (l[1])["tags"] == "2":
+                l[1] = bg_canvas.create_image(x_coor, y_3rd, image=img2, tags=2)
+            elif (l[1])["tags"] == "3":
+                l[1] = bg_canvas.create_image(x_coor, y_3rd, image=img3, tags=3)
+            elif (l[1])["tags"] == "4":
+                l[1] = bg_canvas.create_image(x_coor, y_3rd, image=img4, tags=4)
+
+            if (l[2])["tags"] == "1":
+                l[2] = bg_canvas.create_image(x_coor, y_bottom, image=img1, tags=1)
+            elif (l[2])["tags"] == "2":
+                l[2] = bg_canvas.create_image(x_coor, y_bottom, image=img2, tags=2)
+            elif (l[2])["tags"] == "3":
+                l[2] = bg_canvas.create_image(x_coor, y_bottom, image=img3, tags=3)
+            elif (l[2])["tags"] == "4":
+                l[2] = bg_canvas.create_image(x_coor, y_bottom, image=img4, tags=4)
+
+        elif len(l) == 4:
+            if (l[0])["tags"] == "1":
+                l[0] = bg_canvas.create_image(x_coor, y_top, image=img1, tags=1)
+            elif (l[0])["tags"] == "2":
+                l[0] = bg_canvas.create_image(x_coor, y_top, image=img2, tags=2)
+            elif (l[0])["tags"] == "3":
+                l[0] = bg_canvas.create_image(x_coor, y_top, image=img3, tags=3)
+            elif (l[0])["tags"] == "4":
+                l[0] = bg_canvas.create_image(x_coor, y_top, image=img4, tags=4)
+
+            if (l[1])["tags"] == "1":
+                l[1] = bg_canvas.create_image(x_coor, y_2nd, image=img1, tags=1)
+            elif (l[1])["tags"] == "2":
+                l[1] = bg_canvas.create_image(x_coor, y_2nd, image=img2, tags=2)
+            elif (l[1])["tags"] == "3":
+                l[1] = bg_canvas.create_image(x_coor, y_2nd, image=img3, tags=3)
+            elif (l[1])["tags"] == "4":
+                l[1] = bg_canvas.create_image(x_coor, y_2nd, image=img4, tags=4)
+
+            if (l[2])["tags"] == '1':
+                l[2] = bg_canvas.create_image(x_coor, y_3rd, image=img1, tags=1)
+            elif (l[2])["tags"] == '2':
+                l[2] = bg_canvas.create_image(x_coor, y_3rd, image=img2, tags=2)
+            elif (l[2])["tags"] == '3':
+                l[2] = bg_canvas.create_image(x_coor, y_3rd, image=img3, tags=3)
+            elif (l[2])["tags"] == '4':
+                l[2] = bg_canvas.create_image(x_coor, y_3rd, image=img4, tags=4)
+
+            if (l[3])["tags"] == '1':
+                l[3] = bg_canvas.create_image(x_coor, y_bottom, image=img1, tags=1)
+            elif (l[3])["tags"] == '2':
+                l[3] = bg_canvas.create_image(x_coor, y_bottom, image=img2, tags=2)
+            elif (l[3])["tags"] == '3':
+                l[3] = bg_canvas.create_image(x_coor, y_bottom, image=img3, tags=3)
+            elif (l[3])["tags"] == '4':
+                l[3] = bg_canvas.create_image(x_coor, y_bottom, image=img4, tags=4)
 
 isStarted = False
+
 
 def start_click(b):
     global isStarted, list_1st, list_2nd, list_3rd, disc1, disc2, disc3, disc4
@@ -91,15 +235,21 @@ def start_click(b):
     else:
         reset()
 
+
 def reset():
     global count, list_1st, list_2nd, list_3rd, disc1, disc2, disc3, disc4
     count = 0
     list_1st = [disc1, disc2, disc3, disc4]
     list_2nd = []
     list_3rd = []
+    move_disc()
+    make_abled()
 
-
-
+def make_abled():
+    global b12, b13, b21, b23, b31, b32
+    li = [b12, b13, b21, b23, b31, b32]
+    for l in li:
+        l.config(state=NORMAL)
 
 window.mainloop()
 
