@@ -3,55 +3,48 @@ from tkinter import *
 
 window = tk.Tk()
 window.title("Tower of Hanoi")
-window.geometry("500x300")
+window.geometry("830x320")
 window.resizable(False, False)
 window.config(bg='white')
+
+bg_canvas = Canvas(window, width=900, height=300, bg='white')
 
 start_bt = Button(window, text="Game Start", command=lambda: start_click(start_bt))
 start_bt.place(relx=0.05, rely=0.05)
 start_bt.place(relwidth=0.2, relheight=0.1)
 
-column1 = Canvas(window, width=10, height=130, bg='tan')
-column1.place(x=130, y=170)
-
-column2 = Canvas(window, width=10, height=130, bg='tan')
-column2.place(x=260, y=170)
-
-column3 = Canvas(window, width=10, height=130, bg='tan')
-column3.place(x=390, y=170)
-
-floor = Canvas(window, width=400, height=15, bg='tan')
-floor.place(x=50, y=285)
-
-
-
+column1 = bg_canvas.create_rectangle(200, 200, 210, 300, fill='tan')
+column2 = bg_canvas.create_rectangle(410, 200, 420, 300, fill='tan')
+column3 = bg_canvas.create_rectangle(620, 200, 630, 300, fill='tan')
+floor = bg_canvas.create_rectangle(0, 300, 900, 320, fill='tan')
 
 count = 0
-ct = Label(window, width=10, height=1, text="count: " + str(count), borderwidth=1, relief='groove')
-ct.place(x=400, y=30)
+ct = Label(window, width=15, height=1, text="count: " + str(count), borderwidth=1, relief='groove')
+ct.place(relx=0.85, rely=0.05)
 
-disc1 = Canvas(window, width=90, height=10, bg='black')
-disc2 = Canvas(window, width=70, height=10, bg='gray')
-disc3 = Canvas(window, width=50, height=10, bg='blue')
-disc4 = Canvas(window, width=30, height=10, bg='red')
+bg_canvas.pack()
 
 
+img1 = PhotoImage(file="1.png")
+disc1 = bg_canvas.create_image(0, 0, image=img1)
+#disc1 = Label(window, image=img1, bg='black', width=60, height=20).place(x=100, y=100)
+#disc2 = Label(window, image=img1, bg='darkorange', width=80, height=20).place(x=90, y=120)
+#disc3 = Label(window, image=img1, bg='green', width=100, height=20).place(x=80, y=140)
+#disc4 = Label(window, image=img1, bg='darkblue', width=120, height=20).place(x=70, y=160)
 
 isStarted = False
 
 
-def move_disc(d):
-    my_label.config(text="coordinates: x-> " + str(d.x) + " y-> " + str(d.y))
+def move_disc(e):
+    global img1
+    my_label.config(text="coordinates: x-> " + str(e.x) + " y-> " + str(e.y))
+    disc1 = bg_canvas.create_image(e.x, e.y, image=img1)
+
 
 my_label = Label(window, text='')
-my_label.pack(pady=20)
+my_label.pack()
 
-disc1.bind('<B1-Motion>', move_disc)
-disc1.place(relx=0.18, rely=0.91)
-
-disc2.place(relx=0.2, rely=0.87)
-disc3.place(relx=0.22, rely=0.83)
-disc4.place(relx=0.24, rely=0.79)
+bg_canvas.bind('<B1-Motion>', move_disc)
 
 
 def start_click(b):
