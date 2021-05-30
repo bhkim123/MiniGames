@@ -44,17 +44,17 @@ disc3 = bg_canvas.create_image(x_1st, y_3rd, image=img3, tag="d3")
 img4 = PhotoImage(file='4.png')
 disc4 = bg_canvas.create_image(x_1st, y_bottom, image=img4, tag="d4")
 
-b12 = Button(window, text=">", font=("Helvetica", 10), command=lambda: clicked(b12))
+b12 = Button(window, text=">", font=("Helvetica", 10), command=lambda: click12())
 b12.place(x=150, y=300, width=50, height=20)
-b13 = Button(window, text=">>", font=("Helvetica", 10), command=lambda: clicked(b13))
+b13 = Button(window, text=">>", font=("Helvetica", 10), command=lambda: click13())
 b13.place(x=210, y=300, width=50, height=20)
-b21 = Button(window, text="<", font=("Helvetica", 10), command=lambda: clicked(b21))
+b21 = Button(window, text="<", font=("Helvetica", 10), command=lambda: click21())
 b21.place(x=360, y=300, width=50, height=20)
-b23 = Button(window, text=">", font=("Helvetica", 10), command=lambda: clicked(b23))
+b23 = Button(window, text=">", font=("Helvetica", 10), command=lambda: click23())
 b23.place(x=420, y=300, width=50, height=20)
-b31 = Button(window, text="<<", font=("Helvetica", 10), command=lambda: clicked(b31))
+b31 = Button(window, text="<<", font=("Helvetica", 10), command=lambda: click31())
 b31.place(x=570, y=300, width=50, height=20)
-b32 = Button(window, text="<", font=("Helvetica", 10), command=lambda: clicked(b32))
+b32 = Button(window, text="<", font=("Helvetica", 10), command=lambda: click32())
 b32.place(x=630, y=300, width=50, height=20)
 
 list_1st = [disc4, disc3, disc2, disc1]
@@ -71,81 +71,152 @@ def start_click(b):
         b.config(state=tk.DISABLED)
         isStarted = True
 
-
-def clicked(b):
-    global b12, b13, b21, b23, b31, b32, list_1st, list_2nd, list_3rd, isStarted
-    if isStarted:
-        if (b == b12 or b == b13) and len(list_1st) > 0:
-            top_d = list_1st[-1]
-            if b == b12 and ((len(list_2nd) > 0 and compare_disc(top_d, list_2nd[-1])) or len(list_2nd) == 0):
-                move_disc(top_d, list_1st, list_2nd)
-            elif b == b13 and ((len(list_3rd) > 0 and compare_disc(top_d, list_3rd[-1])) or len(list_3rd) == 0):
-                move_disc(top_d, list_1st, list_3rd)
-        elif (b == b21 or b == b23) and len(list_2nd) > 0:
-            top_d = list_2nd[-1]
-            if b == b21 and ((len(list_1st) > 0 and compare_disc(top_d, list_1st[-1])) or len(list_1st) == 0):
-                move_disc(top_d, list_2nd, list_1st)
-            elif b == b23 and ((len(list_3rd) > 0 and compare_disc(top_d, list_3rd[-1])) or len(list_3rd) == 0):
-                move_disc(top_d, list_2nd, list_3rd)
-        elif (b == b31 or b == b32) and len(list_3rd) > 0:
-            top_d = list_3rd[-1]
-            if b == b31 and (len(list_1st) == 0 or (len(list_1st) > 0 and compare_disc(top_d, list_1st[-1]))):
-                move_disc(top_d, list_3rd, list_1st)
-            elif b == b32 and len(list_2nd) == 0 or (len(list_2nd) > 0 and compare_disc(top_d, list_2nd[-1])):
-                move_disc(top_d, list_3rd, list_2nd)
+def click12():
+    global list_1st, list_2nd, isStarted
+    if isStarted and len(list_1st) > 0:
+        top = list_1st[-1]
+        if len(list_2nd) == 0 or compare_disc(top, list_2nd[-1]):
+            move12(top)
     check_win()
 
 
-def move_disc(d, dl_from, dl_to):
-    global list_1st, list_2nd, list_3rd, disc1, disc2, disc3, disc4, img1, img2, img3, img4, bg_canvas, x_1st, x_2nd, x_3rd, y_top, y_2nd, y_3rd, y_bottom, count, ct
+def move12(top):
+    global list_1st, list_2nd, count, ct
+    x = 210
+    list_1st.remove(top)
+    list_2nd.append(top)
+    y = y_coor(list_1st, list_2nd)
+    move_image(top, x, y)
     count += 1
     ct.config(text="count: " + str(count))
 
-    x = 0
+
+def click13():
+    global list_1st, list_3rd, isStarted
+    if isStarted and len(list_1st) > 0:
+        top = list_1st[-1]
+        if len(list_3rd) == 0 or compare_disc(top, list_3rd[-1]):
+            move13(top)
+    check_win()
+
+
+def move13(top):
+    global list_1st, list_3rd, count, ct
+    x = 420
+    list_1st.remove(top)
+    list_3rd.append(top)
+    y = y_coor(list_1st, list_3rd)
+    move_image(top, x, y)
+    count += 1
+    ct.config(text="count: " + str(count))
+
+
+def click21():
+    global list_1st, list_2nd, isStarted
+    if isStarted and len(list_2nd) > 0:
+        top = list_2nd[-1]
+        if len(list_1st) == 0 or compare_disc(top, list_1st[-1]):
+            move21(top)
+    check_win()
+
+
+def move21(top):
+    global list_1st, list_2nd, count, ct
+    x = -210
+    list_2nd.remove(top)
+    list_1st.append(top)
+    y = y_coor(list_2nd, list_1st)
+    move_image(top, x, y)
+    count += 1
+    ct.config(text="count: " + str(count))
+
+
+def click23():
+    global list_2nd, list_3rd, isStarted
+    if isStarted and len(list_2nd) > 0:
+        top = list_2nd[-1]
+        if len(list_3rd) == 0 or compare_disc(top, list_3rd[-1]):
+            move23(top)
+    check_win()
+
+
+def move23(top):
+    global list_2nd, list_3rd, count, ct
+    x = 210
+    list_2nd.remove(top)
+    list_3rd.append(top)
+    y = y_coor(list_2nd, list_3rd)
+    move_image(top, x, y)
+    count += 1
+    ct.config(text="count: " + str(count))
+
+
+def click31():
+    global list_1st, list_3rd, isStarted
+    if isStarted and len(list_3rd) > 0:
+        top = list_3rd[-1]
+        if len(list_1st) == 0 or compare_disc(top, list_1st[-1]):
+            move31(top)
+    check_win()
+
+
+def move31(top):
+    global list_1st, list_3rd, count, ct
+    x = -420
+    list_3rd.remove(top)
+    list_1st.append(top)
+    y = y_coor(list_3rd, list_1st)
+    move_image(top, x, y)
+    count += 1
+    ct.config(text="count: " + str(count))
+
+
+def click32():
+    global list_2nd, list_3rd, isStarted
+    if isStarted and len(list_3rd) > 0:
+        top = list_3rd[-1]
+        if len(list_2nd) == 0 or compare_disc(top, list_2nd[-1]):
+            move32(top)
+    check_win()
+
+
+def move32(top):
+    global list_2nd, list_3rd, count, ct
+    x = -210
+    list_3rd.remove(top)
+    list_2nd.append(top)
+    y = y_coor(list_3rd, list_2nd)
+    move_image(top, x, y)
+    count += 1
+    ct.config(text="count: " + str(count))
+
+
+def y_coor(from_tower, to_tower):
     y = 0
-    no_fr = len(dl_from)
-    no_to = len(dl_to)
-
-    if no_fr == 4:
-        y += 75
-    elif no_fr == 3:
-        if no_to == 0:
+    if len(from_tower) == 3:
+     y += 75
+    elif len(from_tower) == 2:
+        if len(to_tower) == 1:
             y += 50
-        elif no_to == 1:
+        elif len(to_tower) == 2:
             y += 25
-    elif no_fr == 2:
-        if no_to == 0:
+    elif len(from_tower) == 1:
+        if len(to_tower) == 1:
             y += 25
-        elif no_to == 1:
-            y += 0
-        elif no_to == 2:
+        elif len(to_tower) == 3:
             y -= 25
-    elif no_fr == 1:
-        if no_to == 0:
-            y += 0
-        elif no_to == 1:
+    elif len(from_tower) == 0:
+        if len(to_tower) == 2:
             y -= 25
-        elif no_to == 2:
+        elif len(to_tower) == 3:
             y -= 50
-        elif no_to == 3:
+        elif len(to_tower) == 4:
             y -= 75
+    return y
 
-    dl_from.remove(d)
-    dl_to.append(d)
 
-    if dl_from == list_2nd and dl_to == list_3rd:
-        x += 210
-    elif dl_from == list_3rd and dl_to == list_2nd:
-        x -= 210
-    elif dl_from == list_3rd and dl_to == list_1st:
-        x -= 420
-    elif dl_from == list_1st and dl_to == list_3rd:
-        x += 420
-    elif dl_from == list_1st and dl_to == list_2nd:
-        x += 210
-    elif dl_from == list_2nd and dl_to == list_1st:
-        x -= 210
-
+def move_image(d, x, y):
+    global disc1, disc2, disc3, disc4, bg_canvas
     if d == disc1:
         bg_canvas.move(disc1, x, y)
     elif d == disc2:
@@ -179,13 +250,6 @@ def make_disabled():
     li = [b12, b13, b21, b23, b31, b32]
     for l in li:
         l.config(state=tk.DISABLED)
-
-
-def make_able():
-    global b12, b13, b21, b23, b31, b32
-    buttons = [b12, b13, b21, b23, b31, b32]
-    for b in buttons:
-        b.config(state=tk.NORMAL)
 
 
 bg_canvas.pack()
